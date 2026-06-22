@@ -29,7 +29,7 @@ export default function Projects() {
           <p className="text-gray-600 mt-3">
             A simple JavaScript calculator built to practice DOM manipulation.
           </p>
-          <a href= "/cal.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 mt-4 inline-block">
+          <a href= "/cal.html/" target="_blank" rel="noopener noreferrer" className="text-blue-600 mt-4 inline-block">
             View Project
           </a>
         </div>
