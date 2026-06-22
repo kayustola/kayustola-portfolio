@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ultimate JS Calculator</title>
+  <style>
+    :root {
+    --bg-color: #f4f4f4;
+    --text-color: #333;
+    --box-bg: #fff;
+    --primary-color: #007BFF;
+    --history-bg: #e9ecef;
+  }
+
+  body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #eee;
+    --box-bg: #1e1e1e;
+    --primary-color: #00bcd4;
+    --history-bg: #2a2a2a; /* this is the dark mode version */
+  }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .calculator {
+      background: var(--box-bg);
+      padding: 20px;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--primary-color);
+      text-align: center;
+      font-size: 1.4rem;
+    }
+  
+    #history {
+      margin-top: 20px;
+      background: var(--history-bg);
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .toggle-theme {
+      margin: 20px auto;
+      display: block;
+      background: #444;
+      color: white;
+    }
+
+    @media screen and (max-width: 480px) {
+      .calculator {
+        padding: 15px;
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="toggle-theme" onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+
+  <div class="calculator">
+    <h2>Ultimate JavaScript Calculator</h2>
+
+    <input type="number" id="num1" placeholder="First Number">
+    <div id="num1-error" class="error"></div>
+
+    <input type="number" id="num2" placeholder="Second Number (if needed)">
+    <div id="num2-error" class="error"></div>
+
+    <select id="operator">
+      <option value="+">Addition (+)</option>
+      <option value="-">Subtraction (-)</option>
+      <option value="*">Multiplication (*)</option>
+      <option value="/">Division (/)</option>
+      <option value="%">Modulus (%)</option>
+      <option value="^">Power (xʸ)</option>
+      <option value="√">Square Root (√x)</option>
+      <option value="∛">Cube Root (∛x)</option>
+      <option value="log">Logarithm (log₁₀ x)</option>
+      <option value="sin">Sine (sin x)</option>
+    </select>
+
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="clearCalculator()" style="background: #dc3545;">Reset</button>
+
+    <div id="result">Result: --</div>
+
+    <div id="history">
+      <strong>History:</strong>
+    </div>
+  </div>
+
+  <script>
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const operatorSelect = document.getElementById('operator');
+    const resultDisplay = document.getElementById('result');
+    const historyDiv = document.getElementById('history');
+    const num1Error = document.getElementById('num1-error');
+    const num2Error = document.getElementById('num2-error');
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    function calculate() {
+      const num1 = parseFloat(num1Input.value);
+      const num2 = parseFloat(num2Input.value);
+      const operator = operatorSelect.value;
+      let result = '';
+      let historyText = '';
+
+      num1Error.textContent = "";
+      num2Error.textContent = "";
+
+      if (isNaN(num1)) {
+        num1Error.textContent = 'First number is required.';
+        return;
+      }
+
+      if (["+","-","*","/","%","^"].includes(operator) && isNaN(num2)) {
+        num2Error.textContent = 'Second number is required for this operation.';
+        return;
+      }
+
+      switch (operator) {
+        case '+': result = num1 + num2; historyText = `${num1} + ${num2} = ${result}`; break;
+        case '-': result = num1 - num2; historyText = `${num1} - ${num2} = ${result}`; break;
+        case '*': result = num1 * num2; historyText = `${num1} × ${num2} = ${result}`; break;
+        case '/': result = num2 !== 0 ? num1 / num2 : 'Cannot divide by zero'; historyText = `${num1} ÷ ${num2} = ${result}`; break;
+        case '%': result = num1 % num2; historyText = `${num1} % ${num2} = ${result}`; break;
+        case '^': result = Math.pow(num1, num2); historyText = `${num1} ^ ${num2} = ${result}`; break;
+        case '√': result = Math.sqrt(num1); historyText = `√${num1} = ${result}`; break;
+        case '∛': result = Math.cbrt(num1); historyText = `∛${num1} = ${result}`; break;
+        case 'log': result = Math.log10(num1); historyText = `log₁₀(${num1}) = ${result}`; break;
+        case 'sin': result = Math.sin(num1 * Math.PI / 180); historyText = `sin(${num1}°) = ${result}`; break;
+        default: result = 'Invalid operator';
+      }
+
+      resultDisplay.innerText = 'Result: ' + result;
+      if (result !== '') {
+        const p = document.createElement('p');
+        p.innerText = historyText;
+        historyDiv.appendChild(p);
+      }
+    }
+
+    function clearCalculator() {
+      num1Input.value = '';
+      num2Input.value = '';
+      resultDisplay.innerText = 'Result: --';
+      historyDiv.innerHTML = '<strong>History:</strong>';
+      num1Error.textContent = "";
+      num2Error.textContent = "";
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        calculate();
+      }
+    });
+  </script>
+
+</body>
+</html>
