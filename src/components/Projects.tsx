@@ -29,13 +29,9 @@ export default function Projects() {
           <p className="text-gray-600 mt-3">
             A simple JavaScript calculator built to practice DOM manipulation.
           </p>
-        <a
-  href={`${import.meta.env.BASE_URL}cal.html`}
-  target="_blank"
-  rel="noopener noreferrer"
->
-  View Project
-</a>
+       <a href= "https://kayustola.github.io/kayustola-portfolio/cal.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 mt-4 inline-block">
+            View Project
+          </a>
         </div>
 
       </div>
