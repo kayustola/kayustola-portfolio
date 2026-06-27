@@ -44,7 +44,7 @@ export default function Contact() {
   </a>
 
   <a
-  href="https://www.facebook.com/voiceinsilence07/"
+  href="https://www.facebook.com/voiceinsilence01/"
   target="_blank"
   rel="noopener noreferrer"
   className="bg-slate-800 border border-cyan-500/20 rounded-2xl p-6 hover:border-cyan-400 hover:scale-105 transition-all"
